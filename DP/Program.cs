@@ -2,6 +2,7 @@
 using Iterator;
 using Momento;
 using State;
+using Strategy;
 using System;
 
 namespace DP
@@ -64,6 +65,12 @@ namespace DP
                         Console.WriteLine(url);
                         iterator.next();
                     }
+                    break;
+                case 6:
+                    //The difference between State and Strategy pattern is that in state pattern there is only a single state of the object and the behaviour is determined by the implementation injected. 
+                    //In strategy pattern there could be multiple behaviours in form of multiple properties inside class such as IFilter & ICompression. The implementation injected further changes the behaviour. 
+                    PhotoProcessor photoProcessor = new PhotoProcessor(new BnW(),new JPEG());
+                    photoProcessor.ProcessPhoto();
                     break;
             }
 
