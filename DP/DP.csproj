@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Momento\Momento.csproj" />
     <ProjectReference Include="..\State\State.csproj" />
     <ProjectReference Include="..\Strategy\Strategy.csproj" />
+    <ProjectReference Include="..\Template\Template.csproj" />
   </ItemGroup>
 
 </Project>

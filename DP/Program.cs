@@ -4,6 +4,7 @@ using Momento;
 using State;
 using Strategy;
 using System;
+using Template;
 
 namespace DP
 {
@@ -71,6 +72,11 @@ namespace DP
                     //In strategy pattern there could be multiple behaviours in form of multiple properties inside class such as IFilter & ICompression. The implementation injected further changes the behaviour. 
                     PhotoProcessor photoProcessor = new PhotoProcessor(new BnW(),new JPEG());
                     photoProcessor.ProcessPhoto();
+                    break;
+                case 7:
+                    AbstractPreFlightCheckList flightChecklist = new F16PreFlightCheckList();
+                    flightChecklist.runChecklist();
+
                     break;
             }
 
