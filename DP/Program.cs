@@ -1,4 +1,6 @@
-﻿using Factory;
+﻿using Command;
+using Command.Undo;
+using Factory;
 using Iterator;
 using Momento;
 using State;
@@ -31,7 +33,7 @@ namespace DP
                     break;
                 case 3:
                     var editor = new Editor();
-                    var history = new History();
+                    var history = new Momento.History();
 
                     editor.SetContent("a");
                     history.Push(editor.CreateState());
@@ -73,9 +75,34 @@ namespace DP
                     PhotoProcessor photoProcessor = new PhotoProcessor(new BnW(),new JPEG());
                     photoProcessor.ProcessPhoto();
                     break;
-                case 7:
+                case 7: //template
                     AbstractPreFlightCheckList flightChecklist = new F16PreFlightCheckList();
                     flightChecklist.runChecklist();
+
+                    break;
+                case 8: //command
+                    var service = new CustomerService();
+                    var command = new AddCustomerCommand(service);
+                    var button = new Button(command);
+                    button.click();
+
+                    var composite = new CompositeCommand();
+                    composite.Add(new ResizeCommand());
+                    composite.Add(new BlackAndWHiteCommand());
+                    var button2 = new Button(composite);
+                    button2.click();
+
+                    var commandHisotry = new Command.Undo.History();
+
+                    var doc = new HtmlDocument();
+                    doc.SetContent("Hello World");
+                    var boldCommand = new BoldCommand(doc, commandHisotry);
+                    boldCommand.Execute();
+                    Console.WriteLine(doc.GetContent());
+
+                    var undoCommand = new UndoCommand(commandHisotry);
+                    undoCommand.Execute();
+                    Console.WriteLine(doc.GetContent());
 
                     break;
             }
