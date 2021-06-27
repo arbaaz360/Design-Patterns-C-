@@ -1,12 +1,16 @@
-﻿using Command;
+﻿using ChainOfResponsibility;
+using Command;
 using Command.Undo;
 using Factory;
 using Iterator;
+using Mediator;
 using Momento;
+using Observer;
 using State;
 using Strategy;
 using System;
 using Template;
+using Visitor; 
 
 namespace DP
 {
@@ -72,7 +76,7 @@ namespace DP
                 case 6:
                     //The difference between State and Strategy pattern is that in state pattern there is only a single state of the object and the behaviour is determined by the implementation injected. 
                     //In strategy pattern there could be multiple behaviours in form of multiple properties inside class such as IFilter & ICompression. The implementation injected further changes the behaviour. 
-                    PhotoProcessor photoProcessor = new PhotoProcessor(new BnW(),new JPEG());
+                    PhotoProcessor photoProcessor = new PhotoProcessor(new BnW(), new JPEG());
                     photoProcessor.ProcessPhoto();
                     break;
                 case 7: //template
@@ -83,18 +87,18 @@ namespace DP
                 case 8: //command
                     var service = new CustomerService();
                     var command = new AddCustomerCommand(service);
-                    var button = new Button(command);
+                    var button = new Command.Button(command);
                     button.click();
 
                     var composite = new CompositeCommand();
                     composite.Add(new ResizeCommand());
                     composite.Add(new BlackAndWHiteCommand());
-                    var button2 = new Button(composite);
+                    var button2 = new Command.Button(composite);
                     button2.click();
 
                     var commandHisotry = new Command.Undo.History();
 
-                    var doc = new HtmlDocument();
+                    var doc = new Command.Undo.HtmlDocument();
                     doc.SetContent("Hello World");
                     var boldCommand = new BoldCommand(doc, commandHisotry);
                     boldCommand.Execute();
@@ -104,6 +108,30 @@ namespace DP
                     undoCommand.Execute();
                     Console.WriteLine(doc.GetContent());
 
+                    break;
+                case 9: //Observer
+                    DataSource dataSource = new DataSource();
+                    dataSource.AddObserver(new Chart());
+                    dataSource.AddObserver(new SpreadSheet(dataSource));
+                    dataSource.SetValue("value changed");
+                    break;
+                case 10: //Mediator //the pattern is applied to encapsulate or centralize the interactions amongst a number of objects
+                    var dialog = new ArticlesDialogBox();
+                    dialog.SimulateUsserInteraction();
+                    break;
+                case 11: //Chain of Responsibility
+                    //autehnticator --> logger --> compressor --> null
+                    var compressor = new Compressor(null);
+                    var logger = new Logger(compressor);
+                    var authenticator = new Authenticator(logger);
+                    var server = new WebServer(authenticator);
+                    server.handle(new HttpRequest() { UserName = "admin", Password="1234" });
+                    break;
+                case 12: //Visitor
+                    var document = new Visitor.HtmlDocument();
+                    document.Add(new HeadingNode());
+                    document.Add(new AnchorNode());
+                    document.Execute(new HighlighOperation());
                     break;
             }
 
