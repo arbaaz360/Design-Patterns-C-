@@ -1,14 +1,22 @@
-﻿using ChainOfResponsibility;
+﻿using Adapter;
+using Bridge;
+using ChainOfResponsibility;
+using ClassLibrary1;
 using Command;
 using Command.Undo;
+using Decorator;
+using Facade;
 using Factory;
+using FlyWeight;
 using Iterator;
 using Mediator;
 using Momento;
 using Observer;
+using Proxy;
 using State;
 using Strategy;
 using System;
+using System.Collections.Generic;
 using Template;
 using Visitor; 
 
@@ -133,11 +141,61 @@ namespace DP
                     document.Add(new AnchorNode());
                     document.Execute(new HighlighOperation());
                     break;
+                case 13: // Composite
+                    var shape1 = new Shape();
+                    var shape2 = new Shape();
+                    var group1 = new Group();
+                    group1.Add(shape1);
+                    group1.Add(shape2);
+                    var group2 = new Group();
+                    var shape3 = new Shape();
+                    group2.Add(shape3);
+                    group1.Add(group2);
+                    group1.render();
+                    break;
+                case 14: //Adapter
+                    Image image = new Image();
+                    ImageViewer imageViewer = new ImageViewer(image);
+                    imageViewer.Apply(new SepiaFilter());
+                    imageViewer.Apply(new FancyAdapter(new FancyFilter()));
+                    break;
+                case 15: //Decorator
+                    var cloudStream = new CloudStream();
+                    var encryptData = new EncryptStream(cloudStream);
+                    var compressData = new CompressStream(encryptData);
+                    compressData.write("some random data");
+                    break;
+                case 16: //Facade
+                    NotificationService notificationService = new NotificationService();
+                    notificationService.Send("Hello..", "17.0.0.1");
+                    break;
+                case 17: //Flyweight
+                    PointService pointService = new PointService(new PointFactory());
+                    var points = pointService.getPoints();
+                    foreach(var p in points)
+                    {
+                        p.draw();
+                    }
+                    break;
+                case 18: //Bridge
+                    AdvancedRemoteControl remote = new AdvancedRemoteControl(new SonyTv());
+                    remote.setChannel(1);
+                    break;
+                case 19: //Proxy
+                    Library lib = new Library();
+                    List<string> bookNames = new List<string>() { "a","b","c"};
+                    foreach(var book in bookNames)
+                    {
+                        lib.eBooks.Add(book,new EBookProxy(book));
+                    }
+                    lib.OpenEbook("a");
+                    break;
             }
 
             Console.ReadLine();
 
         }
+        
     }
 }
 
