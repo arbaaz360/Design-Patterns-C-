@@ -1,5 +1,7 @@
-﻿using Adapter;
+﻿using AbstractFactory;
+using Adapter;
 using Bridge;
+using Builder;
 using ChainOfResponsibility;
 using ClassLibrary1;
 using Command;
@@ -7,10 +9,13 @@ using Command.Undo;
 using Decorator;
 using Facade;
 using Factory;
+using FactoryMethod;
+using FluentBuilder;
 using FlyWeight;
 using Iterator;
 using Mediator;
 using Momento;
+using ObjectPool;
 using Observer;
 using Proxy;
 using State;
@@ -18,7 +23,7 @@ using Strategy;
 using System;
 using System.Collections.Generic;
 using Template;
-using Visitor; 
+using Visitor;
 
 namespace DP
 {
@@ -133,7 +138,7 @@ namespace DP
                     var logger = new Logger(compressor);
                     var authenticator = new Authenticator(logger);
                     var server = new WebServer(authenticator);
-                    server.handle(new HttpRequest() { UserName = "admin", Password="1234" });
+                    server.handle(new HttpRequest() { UserName = "admin", Password = "1234" });
                     break;
                 case 12: //Visitor
                     var document = new Visitor.HtmlDocument();
@@ -172,7 +177,7 @@ namespace DP
                 case 17: //Flyweight
                     PointService pointService = new PointService(new PointFactory());
                     var points = pointService.getPoints();
-                    foreach(var p in points)
+                    foreach (var p in points)
                     {
                         p.draw();
                     }
@@ -183,19 +188,51 @@ namespace DP
                     break;
                 case 19: //Proxy
                     Library lib = new Library();
-                    List<string> bookNames = new List<string>() { "a","b","c"};
-                    foreach(var book in bookNames)
+                    List<string> bookNames = new List<string>() { "a", "b", "c" };
+                    foreach (var book in bookNames)
                     {
-                        lib.eBooks.Add(book,new EBookProxy(book));
+                        lib.eBooks.Add(book, new EBookProxy(book));
                     }
                     lib.OpenEbook("a");
+                    break;
+                case 20: //Factory Method
+                    FactoryMethod.Employee emp = new FactoryMethod.Employee();
+                    BaseEmployeeFactory permanentEmp = new PermanentEmployeeFactory(emp);
+                    permanentEmp.ApplySalary();
+                    Console.WriteLine(emp.HouseAllowance);
+                    break;
+                case 21: //Abstract Factory
+                    AbstractFactory.Employee emp1 = new AbstractFactory.Employee();
+                    emp1.EmployeeTypeID = 1;
+                    emp1.JobDescription = "Manager";
+                    EmployeeSystemFactory esf = new EmployeeSystemFactory();
+                    var computerFactory = esf.Create(emp1);
+                    Console.WriteLine($"{computerFactory.GetType()}, {computerFactory.Processor()}, {computerFactory.SystemType()}, {computerFactory.Brand()}");
+                    break;
+                case 22: //Builder
+                    Builder.IToyBuilder toyBuilder = new Builder.PremiumToyBuilder();
+                    Builder.ToyDirector toyDirector = new Builder.ToyDirector(toyBuilder);
+                     toyDirector.CreateFullFledgedToy();
+                    Console.WriteLine(toyDirector.GetToy());
+                    break;
+                case 23: //Fluent Builder
+                    //Difference of implementation is visible in Director class.
+                    FluentBuilder.IToyBuilder toyBuilder1 = new FluentBuilder.PremiumToyBuilder();
+                    FluentBuilder.ToyDirector toyDirector1 = new FluentBuilder.ToyDirector(toyBuilder1);
+                    toyDirector1.CreateFullFledgedToy();
+                    Console.WriteLine(toyDirector1.GetToy());
+                    break;
+                case 24://Object Pool
+                    ObjectPool<OneExpensiveObjToCreate> objPool = new ObjectPool<OneExpensiveObjToCreate>();
+                    OneExpensiveObjToCreate obj = objPool.Get();
+                    objPool.Release(obj);
                     break;
             }
 
             Console.ReadLine();
 
         }
-        
+
     }
 }
 

@@ -6,18 +6,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AbstractFactory\AbstractFactory.csproj" />
     <ProjectReference Include="..\Adapter\Adapter.csproj" />
     <ProjectReference Include="..\Bridge\Bridge.csproj" />
+    <ProjectReference Include="..\Builder\Builder.csproj" />
     <ProjectReference Include="..\ChainOfResponsibility\ChainOfResponsibility.csproj" />
     <ProjectReference Include="..\ClassLibrary1\Composite.csproj" />
     <ProjectReference Include="..\Command\Command.csproj" />
     <ProjectReference Include="..\Decorator\Decorator.csproj" />
     <ProjectReference Include="..\Facade\Facade.csproj" />
+    <ProjectReference Include="..\FactoryMethod\FactoryMethod.csproj" />
     <ProjectReference Include="..\Factory\Factory.csproj" />
+    <ProjectReference Include="..\FluentBuilder\FluentBuilder.csproj" />
     <ProjectReference Include="..\FlyWeight\FlyWeight.csproj" />
     <ProjectReference Include="..\Iterator\Iterator.csproj" />
     <ProjectReference Include="..\Mediator\Mediator.csproj" />
     <ProjectReference Include="..\Momento\Momento.csproj" />
+    <ProjectReference Include="..\ObjectPool\ObjectPool.csproj" />
     <ProjectReference Include="..\Observer\Observer.csproj" />
     <ProjectReference Include="..\Proxy\Proxy.csproj" />
     <ProjectReference Include="..\State\State.csproj" />
